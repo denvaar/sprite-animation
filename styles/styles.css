@@ -22,6 +22,7 @@ body {
   height: 96px;
   width: 64px;
   background: url('/links.png') left top;
+  position: absolute;
 }
 .link-standing-left {
   background-position: -256px 0;

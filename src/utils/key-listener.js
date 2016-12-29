@@ -27,18 +27,15 @@ export default class KeyListener {
       event.preventDefault();
       this.keys[event.keyCode] = false;
     }
-    this.component.setState({animate:false});
+    //this.component.setState({animate:false});
   }
   
   down(event) {
     if (event.keyCode in this.keys) {
       event.preventDefault();
       this.keys[event.keyCode] = true;
+      //this.component.handleKeyEvents(event.keyCode);
     }
-    this.component.setState({
-      animate:true,
-      directionFacing: event.keyCode
-    });
   }
 
   isDown(keyCode) {
