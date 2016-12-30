@@ -1,0 +1,49 @@
+.link {
+  height: 96px;
+  width: 64px;
+  background: url('/links.png') left top;
+  position: absolute;
+}
+.link-standing-left {
+  background-position: -256px 0;
+}
+.link-standing-right {
+  background-position: -256px -96px;
+}
+.link-standing-front {
+  background-position: -320px 480px;
+}
+.link-standing-back {
+  background-position: -192px 192px;
+}
+
+.link-walking-left {
+  background-position: 0 0;
+  animation: walk-left 0.8s steps(8) infinite;
+}
+.link-walking-right {
+  background-position: 0 -96px;
+  animation: walk-right 0.8s steps(8) infinite;
+}
+.link-walking-front {
+  background-position: 0 480px;
+  animation: walk-front 0.8s steps(8) infinite;
+}
+.link-walking-back {
+  background-position: 0 192px;
+  animation: walk-back 0.8s steps(8) infinite;
+}
+
+@keyframes walk-left {
+  100% { background-position: -512px 0; }
+}
+
+@keyframes walk-right {
+  100% { background-position: -512px -96px; }
+}
+@keyframes walk-front {
+  100% { background-position: -512px 480px; }
+}
+@keyframes walk-back {
+  100% { background-position: -512px 192px; }
+}

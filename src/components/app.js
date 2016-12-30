@@ -1,141 +1,49 @@
 import React, { Component } from 'react';
 
-import KeyListener from '../utils/key-listener';
+import Link from './sprites/link';
+import Bird from './sprites/bird';
+import gameLoop from './animate';
 
+
+const Ball = (props) => <div style={styles}></div>;
 
 export default class App extends Component {
   constructor(props) {
     super(props);
   }
 
-
   render() {
     let linkProps = {
+      spriteId: "link",
+      keys: [37,38,39,40],
       animationClasses: "link link-standing-front",
-      yPosition: 10, //this.state.yPosition,
-      xPosition: 10 //this.state.xPosition,
+      yPosition: 200,
+      xPosition: 200
+    };
+    let birdProps = {
+      spriteId: "bird",
+      keys: [83,68,87,65],
+      animationClasses: "bird bird-flying-front",
+      yPosition: 200,
+      xPosition: 10
     };
 
     return (
       <div className="center">
         <h3 className="banner">Use arrow keys to move Link around.</h3>
-        <SpriteHOC {...linkProps} keys={[37,38,39,40]} />
+        <h3 className="banner">Use a, w, s, d keys to move the bird around.</h3>
+        <SpriteScene sprites={[linkProps, birdProps]} />
       </div>
     );
   }
 }
 
-
-
-const gameLoop = (ComposedComponent) => class extends Component {
-
-  constructor() {
-    super();
-    this.keyListener = new KeyListener();
-    this.loop = this.loop.bind(this);
-  }
-
-  componentDidMount() {
-    this.keyListener.subscribe(this, this.props.keys);
-    this.loop();
-  }
-
-  proc(composedComponentInstance) {
-    //composedComponentInstance.method(args);
-    this.instance = composedComponentInstance;
-  }
-
-  loop() {
-    let areAnyKeysPressed = false;
-    for (let key of this.props.keys) {
-      if (this.keyListener.isDown(key)) {
-        this.instance.handleKeyEvent(key);
-        areAnyKeysPressed = true;
-      }
-    }
-    if (!areAnyKeysPressed) {
-      this.instance.handleKeyEvent(null);
-    }
-    setTimeout(this.loop, 10);
-  }
-
-  render() {
-    const props = {...this.props, ref: this.proc.bind(this)};
-    return (
-      <ComposedComponent {...props} />
-    );
-  }
-}
-
-
-  
-
-class LinkSprite extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      animationClasses: this.props.animationClasses,
-      xPosition: this.props.xPosition,
-      yPosition: this.props.yPosition,
-    };
-    this.lastKeyPressed = null;
-  }
-
-  handleKeyEvent(key) {
-    switch (key) {
-      case 37:
-        this.setState({
-          xPosition: this.state.xPosition - 3,
-          animationClasses: "link link-walking-left"
-        });
-        break;
-      case 39:
-        this.setState({
-          xPosition: this.state.xPosition + 3,
-          animationClasses: "link link-walking-right"  
-        });
-        break;
-      case 38:
-        this.setState({
-          yPosition: this.state.yPosition - 3,
-          animationClasses: "link link-walking-back"
-        });
-        break;
-      case 40:
-        this.setState({
-          yPosition: this.state.yPosition + 3,
-          animationClasses: "link link-walking-front"
-        });
-        break;
-      default:
-        this.setState({
-          animationClasses: ({
-            null: "link link-standing-front",
-            40: "link link-standing-front",
-            39: "link link-standing-right",
-            38: "link link-standing-back",
-            37: "link link-standing-left"
-          })[this.lastKeyPressed]
-        });
-    }
-    if (key) this.lastKeyPressed = key;
-  }
-
-  render() {
-    let styles = {
-      top: this.state.yPosition,
-      left: this.state.xPosition
-    };
-    return (
-      <div className={this.state.animationClasses} style={styles}></div>
-    );
-  }
-}
-
-LinkSprite.propTypes = {
-  animationClasses: React.PropTypes.string.isRequired,
-  yPosition: React.PropTypes.number.isRequired,
-  xPosition: React.PropTypes.number.isRequired
+let styles = {
+  width: 50+"px",
+  height: 50+"px",
+  background: "blue",
+  borderRadius: 50+"%"
 };
 
-const SpriteHOC = gameLoop(LinkSprite);
+
+const SpriteScene = gameLoop(Link, Bird);

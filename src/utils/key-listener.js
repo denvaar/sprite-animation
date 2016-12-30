@@ -1,45 +1,55 @@
 export default class KeyListener {
 
   constructor() {
-    this.keys = {};
-    this.component = null;
+    this.keyMappings = {};
     this.up = this.up.bind(this); 
     this.down = this.down.bind(this); 
+    this.active = false;
   }
 
-  subscribe(component, keys) {
-    window.addEventListener('keydown', this.down);
-    window.addEventListener('keyup', this.up);
-    this.component = component;
+  subscribe(target, keys) {
+    if (!this.active) {
+      window.addEventListener('keydown', this.down);
+      window.addEventListener('keyup', this.up);
+    }
+    let mapping = {};
     keys.forEach(key => {
-      this.keys[key] = false;
+      mapping[key] = false;
     });
+    this.keyMappings = {
+      ...this.keyMappings,
+      [`${target}`]: mapping
+    };
+    this.active = true
   }
 
   unsubscribe() {
     window.removeEventListener('keydown', this.down);
     window.removeEventListener('keyup', this.up);
-    this.keys = {};
+    this.keyMappings = {};
+    this.active = false;
   }
 
   up(event) {
-    if (event.keyCode in this.keys) {
-      event.preventDefault();
-      this.keys[event.keyCode] = false;
-    }
-    //this.component.setState({animate:false});
+    Object.keys(this.keyMappings).forEach(target => {
+      if (event.keyCode in this.keyMappings[target]) {
+        event.preventDefault();
+        this.keyMappings[target][event.keyCode] = false;
+      }
+    });
   }
   
   down(event) {
-    if (event.keyCode in this.keys) {
-      event.preventDefault();
-      this.keys[event.keyCode] = true;
-      //this.component.handleKeyEvents(event.keyCode);
-    }
+    Object.keys(this.keyMappings).forEach(target => {
+      if (event.keyCode in this.keyMappings[target]) {
+        event.preventDefault();
+        this.keyMappings[target][event.keyCode] = true;
+      }
+    });
   }
 
-  isDown(keyCode) {
-    return this.keys[keyCode] || false;
+  isDown(target, keyCode) {
+    return this.keyMappings[target][keyCode] || false;
   }
 
 }

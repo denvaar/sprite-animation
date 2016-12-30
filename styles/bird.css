@@ -1,0 +1,37 @@
+.bird {
+  height: 64px;
+  width: 64px;
+  background: url('/bird.png') left top;
+  position: absolute;
+}
+
+.bird-flying-front {
+  background-position: 0 -192px;
+  animation: fly-front 0.5s steps(4) infinite;
+}
+.bird-flying-left {
+  background-position: 0 0;
+  animation: fly-left 0.5s steps(4) infinite;
+}
+.bird-flying-right {
+  background-position: 0 -64px;
+  animation: fly-right 0.5s steps(4) infinite;
+}
+.bird-flying-down {
+  background-position: 0 -128px;
+  animation: fly-down 0.5s steps(4) infinite;
+}
+
+@keyframes fly-down {
+  100% { background-position: -256px -128px; }
+}
+@keyframes fly-front {
+  100% { background-position: -256px -192px; }
+}
+@keyframes fly-left {
+  100% { background-position: -256px 0; }
+}
+@keyframes fly-right {
+  100% { background-position: -256px -64px; }
+}
+
